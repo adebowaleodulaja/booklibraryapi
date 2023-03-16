@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.ISBN;
 @Table(name = "book")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title", nullable = false)
@@ -52,8 +52,9 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String author, String isbn, String yearReleased, int noOfCopies, boolean isAvailable,
-            List<Category> categories) {
+    public Book(Long id, String title, String author, String isbn, String yearReleased, int noOfCopies,
+            boolean isAvailable, List<Category> categories) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
