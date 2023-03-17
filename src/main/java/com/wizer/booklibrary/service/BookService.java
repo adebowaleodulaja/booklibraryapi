@@ -24,13 +24,13 @@ public class BookService {
         if (book == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else if (book.getTitle() == null) {
-            throw new ApiRequestException("Book title is required in the payload request");
+            throw new ApiRequestException("Book title is required in the payload");
         } else if (book.getAuthor() == null) {
-            throw new ApiRequestException("Book author is required in the payload request");
+            throw new ApiRequestException("Book author is required in the payload");
         } else if (book.getYearReleased() == null) {
-            throw new ApiRequestException("Book year released is required in the payload request");
+            throw new ApiRequestException("Book year released is required in the payload");
         } else if (book.getNoOfCopies() < 1) {
-            throw new ApiRequestException("No of copies produced is required in the payload request");
+            throw new ApiRequestException("No of copies produced is required in the payload");
         }
 
         bookRepository.save(book);
@@ -38,7 +38,10 @@ public class BookService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<Book> updateBook(Long id, BookDTO bookDTO) {
+    public Book updateBook(Long id, BookDTO bookDTO) {
+        if (bookDTO == null) {
+            throw new ApiRequestException("Bad Request");
+        }
         Optional<Book> findBook = bookRepository.findById(id);
         if (findBook.isPresent()) {
             Book book = findBook.get();
@@ -47,11 +50,12 @@ public class BookService {
             book.setNoOfCopies(bookDTO.getNoOfCopies());
             book.setAvailable(bookDTO.isAvailable());
             book.setCategories(bookDTO.getCategories());
+
             bookRepository.save(book);
-            return new ResponseEntity<>(findBook.get(), HttpStatus.OK);
+            return findBook.get();
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        throw new ApiRequestException("Book not found");
     }
 
     public List<Book> findAllBook() {
@@ -78,6 +82,5 @@ public class BookService {
         bookRepository.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    
     }
 }

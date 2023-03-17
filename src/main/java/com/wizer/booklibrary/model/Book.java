@@ -49,8 +49,8 @@ public class Book {
     public Book() {
     }
 
-    public Book(Long id, String title, String author, String isbn, String yearReleased, int noOfCopies,
-            boolean isAvailable, List<Category> categories) {
+    public Book(Long id, String title, String author, @Size(max = 15) String isbn, @Size(max = 50) String yearReleased,
+            int noOfCopies, boolean isAvailable, List<Category> categories) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -58,6 +58,7 @@ public class Book {
         this.yearReleased = yearReleased;
         this.noOfCopies = noOfCopies;
         this.isAvailable = isAvailable;
+        this.categories = categories;
     }
 
     public Long getId() {
