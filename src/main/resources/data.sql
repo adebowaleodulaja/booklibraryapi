@@ -6,7 +6,7 @@ CREATE TABLE book (
 	id BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	title VARCHAR(255) NOT NULL,
 	author VARCHAR(255) NOT NULL,
-	isbn VARCHAR(255),
+	isbn VARCHAR(15),
     year_released VARCHAR(50),
     no_of_copies INTEGER NOT NULL,
 	is_available BIT NOT NULL

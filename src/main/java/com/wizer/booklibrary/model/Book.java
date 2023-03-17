@@ -14,8 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.ISBN;
-
 @Entity
 @Table(name = "book")
 public class Book {
@@ -30,8 +28,7 @@ public class Book {
     private String author;
 
     @Column(name = "isbn")
-    @Size(max = 10)
-    @ISBN
+    @Size(max = 15)
     private String isbn;
 
     @Column(name = "year_released")
