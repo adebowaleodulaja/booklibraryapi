@@ -28,12 +28,6 @@ public class Category {
     @Column(name = "updated")
     private ZonedDateTime updated;
 
-    // @OneToOne(cascade = CascadeType.DETACH)
-    // @JoinTable(name = "book_category", joinColumns = { @JoinColumn(name =
-    // "category_id") }, inverseJoinColumns = {
-    // @JoinColumn(name = "book_id") })
-    // private Book books;
-
     public Category() {
     }
 
