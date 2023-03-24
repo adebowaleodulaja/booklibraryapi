@@ -1,6 +1,6 @@
 package com.wizer.booklibrary.model;
 
-import java.util.List;
+import java.time.ZonedDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -27,6 +27,9 @@ public class Book {
     @Column(name = "author", nullable = false)
     private String author;
 
+    @Column(name = "publisher", nullable = false)
+    private String publisher;
+
     @Column(name = "isbn")
     @Size(max = 15)
     private String isbn;
@@ -38,27 +41,33 @@ public class Book {
     @Column(name = "no_of_copies", nullable = false)
     private int noOfCopies;
 
-    @Column(name = "is_available")
-    private boolean isAvailable;
+    @Column(name = "created")
+    private ZonedDateTime created;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @Column(name = "updated")
+    private ZonedDateTime updated;
+
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinTable(name = "book_category", joinColumns = { @JoinColumn(name = "book_id") }, inverseJoinColumns = {
             @JoinColumn(name = "category_id") })
-    private List<Category> categories;
+    private Category category;
 
     public Book() {
     }
 
-    public Book(Long id, String title, String author, @Size(max = 15) String isbn, @Size(max = 50) String yearReleased,
-            int noOfCopies, boolean isAvailable, List<Category> categories) {
+    public Book(Long id, String title, String author, String publisher, @Size(max = 15) String isbn,
+            @Size(max = 50) String yearReleased, int noOfCopies, ZonedDateTime created, ZonedDateTime updated,
+            Category category) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.publisher = publisher;
         this.isbn = isbn;
         this.yearReleased = yearReleased;
         this.noOfCopies = noOfCopies;
-        this.isAvailable = isAvailable;
-        this.categories = categories;
+        this.created = created;
+        this.updated = updated;
+        this.category = category;
     }
 
     public Long getId() {
@@ -85,6 +94,14 @@ public class Book {
         this.author = author;
     }
 
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
     public String getIsbn() {
         return isbn;
     }
@@ -109,20 +126,28 @@ public class Book {
         this.noOfCopies = noOfCopies;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public ZonedDateTime getCreated() {
+        return created;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public ZonedDateTime getUpdated() {
+        return updated;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setUpdated(ZonedDateTime updated) {
+        this.updated = updated;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -132,11 +157,13 @@ public class Book {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((title == null) ? 0 : title.hashCode());
         result = prime * result + ((author == null) ? 0 : author.hashCode());
+        result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
         result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
         result = prime * result + ((yearReleased == null) ? 0 : yearReleased.hashCode());
         result = prime * result + noOfCopies;
-        result = prime * result + (isAvailable ? 1231 : 1237);
-        result = prime * result + ((categories == null) ? 0 : categories.hashCode());
+        result = prime * result + ((created == null) ? 0 : created.hashCode());
+        result = prime * result + ((updated == null) ? 0 : updated.hashCode());
+        result = prime * result + ((category == null) ? 0 : category.hashCode());
         return result;
     }
 
@@ -164,6 +191,11 @@ public class Book {
                 return false;
         } else if (!author.equals(other.author))
             return false;
+        if (publisher == null) {
+            if (other.publisher != null)
+                return false;
+        } else if (!publisher.equals(other.publisher))
+            return false;
         if (isbn == null) {
             if (other.isbn != null)
                 return false;
@@ -176,12 +208,20 @@ public class Book {
             return false;
         if (noOfCopies != other.noOfCopies)
             return false;
-        if (isAvailable != other.isAvailable)
-            return false;
-        if (categories == null) {
-            if (other.categories != null)
+        if (created == null) {
+            if (other.created != null)
                 return false;
-        } else if (!categories.equals(other.categories))
+        } else if (!created.equals(other.created))
+            return false;
+        if (updated == null) {
+            if (other.updated != null)
+                return false;
+        } else if (!updated.equals(other.updated))
+            return false;
+        if (category == null) {
+            if (other.category != null)
+                return false;
+        } else if (!category.equals(other.category))
             return false;
         return true;
     }

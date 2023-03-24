@@ -17,7 +17,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleApiRequestException(ApiRequestException apiRequestException) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(apiRequestException.getMessage(), httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z")));
+                ZonedDateTime.now(ZoneId.systemDefault()));
 
         return new ResponseEntity<>(apiException, httpStatus);
     }
@@ -26,7 +26,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleNotFoundException(NotFoundException notFoundException) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         ApiException apiException = new ApiException(notFoundException.getMessage(), httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z")));
+                ZonedDateTime.now(ZoneId.systemDefault()));
 
         return new ResponseEntity<>(apiException, httpStatus);
     }
@@ -35,7 +35,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException cvexc) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ApiException apiException = new ApiException(cvexc.getLocalizedMessage(), httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z")));
+                ZonedDateTime.now(ZoneId.systemDefault()));
 
         return new ResponseEntity<>(apiException, httpStatus);
     }

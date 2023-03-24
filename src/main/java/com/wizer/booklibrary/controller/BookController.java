@@ -27,12 +27,13 @@ public class BookController {
 
     @PostMapping("/books")
     public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        return bookService.addNewBook(book);
+        Book newBook = bookService.addNewBook(book);
+        return new ResponseEntity<>(bookService.findBookById(newBook.getId()), HttpStatus.CREATED);
     }
 
     @PutMapping("/books/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable("id") Long id, @RequestBody BookDTO bookDTO) {
-        return new ResponseEntity<Book>(bookService.updateBook(id, bookDTO), HttpStatus.OK);
+        return new ResponseEntity<>(bookService.updateBook(id, bookDTO), HttpStatus.OK);
     }
 
     @GetMapping("/books")
@@ -42,17 +43,19 @@ public class BookController {
 
     @GetMapping("/books/{id}")
     public ResponseEntity<Book> findById(@PathVariable("id") long id) {
-        return bookService.findBookById(id);
+        return new ResponseEntity<>(bookService.findBookById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/books/{title}")
+    @GetMapping("/books/title/{title}")
     public ResponseEntity<List<Book>> findByTitle(@PathVariable("title") String title) {
-        return bookService.findBookByTitle(title);
+        return new ResponseEntity<>(bookService.findBookByTitle(title), HttpStatus.OK);
     }
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<Book> deleteBook(@PathVariable("id") Long id) {
-        return bookService.deleteBook(id);
+        bookService.deleteBook(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

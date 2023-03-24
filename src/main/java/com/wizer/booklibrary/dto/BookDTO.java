@@ -1,15 +1,13 @@
 package com.wizer.booklibrary.dto;
 
-import java.util.List;
-
 import com.wizer.booklibrary.model.Category;
 
 public class BookDTO {
     private String isbn;
     private String yearReleased;
     private int noOfCopies;
-    private boolean isAvailable;
-    private List<Category> categories;
+    private String publisher;
+    private Category category;
 
     public String getIsbn() {
         return isbn;
@@ -35,20 +33,20 @@ public class BookDTO {
         this.noOfCopies = noOfCopies;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
-    public List<Category> getCategories() {
-        return categories;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override
@@ -58,8 +56,8 @@ public class BookDTO {
         result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
         result = prime * result + ((yearReleased == null) ? 0 : yearReleased.hashCode());
         result = prime * result + noOfCopies;
-        result = prime * result + (isAvailable ? 1231 : 1237);
-        result = prime * result + ((categories == null) ? 0 : categories.hashCode());
+        result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
+        result = prime * result + ((category == null) ? 0 : category.hashCode());
         return result;
     }
 
@@ -84,12 +82,15 @@ public class BookDTO {
             return false;
         if (noOfCopies != other.noOfCopies)
             return false;
-        if (isAvailable != other.isAvailable)
-            return false;
-        if (categories == null) {
-            if (other.categories != null)
+        if (publisher == null) {
+            if (other.publisher != null)
                 return false;
-        } else if (!categories.equals(other.categories))
+        } else if (!publisher.equals(other.publisher))
+            return false;
+        if (category == null) {
+            if (other.category != null)
+                return false;
+        } else if (!category.equals(other.category))
             return false;
         return true;
     }

@@ -1,11 +1,11 @@
 package com.wizer.booklibrary.service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wizer.booklibrary.dto.BookDTO;
@@ -20,9 +20,9 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public ResponseEntity<Book> addNewBook(Book book) {
+    public Book addNewBook(Book book) {
         if (book == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new ApiRequestException("Bad Request");
         } else if (book.getTitle() == null) {
             throw new ApiRequestException("Book title is required in the payload");
         } else if (book.getAuthor() == null) {
@@ -33,9 +33,10 @@ public class BookService {
             throw new ApiRequestException("No of copies produced is required in the payload");
         }
 
-        bookRepository.save(book);
+        book.setCreated(ZonedDateTime.now(ZoneId.systemDefault()));
+        book.setUpdated(ZonedDateTime.now(ZoneId.systemDefault()));
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return bookRepository.save(book);
     }
 
     public Book updateBook(Long id, BookDTO bookDTO) {
@@ -48,11 +49,11 @@ public class BookService {
             book.setIsbn(bookDTO.getIsbn());
             book.setYearReleased(bookDTO.getYearReleased());
             book.setNoOfCopies(bookDTO.getNoOfCopies());
-            book.setAvailable(bookDTO.isAvailable());
-            book.setCategories(bookDTO.getCategories());
+            book.setPublisher(bookDTO.getPublisher());
+            book.setCategory(bookDTO.getCategory());
 
-            bookRepository.save(book);
-            return findBook.get();
+            book.setUpdated(ZonedDateTime.now(ZoneId.systemDefault()));
+            return bookRepository.save(book);
         }
 
         throw new ApiRequestException("Book not found");
@@ -62,25 +63,23 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public ResponseEntity<Book> findBookById(long id) {
+    public Book findBookById(long id) {
         Optional<Book> bookToFind = bookRepository.findById(id);
         if (!bookToFind.isPresent()) {
             throw new NotFoundException("Book with id " + id + " not found.");
         }
-        return new ResponseEntity<>(bookToFind.get(), HttpStatus.OK);
+        return bookToFind.get();
     }
 
-    public ResponseEntity<List<Book>> findBookByTitle(String title) {
+    public List<Book> findBookByTitle(String title) {
         List<Book> bookTitle = bookRepository.findByTitleContaining(title);
         if (bookTitle.size() == 0) {
             throw new NotFoundException("Book with title " + title + " not found.");
         }
-        return new ResponseEntity<>(bookTitle, HttpStatus.OK);
+        return bookTitle;
     }
 
-    public ResponseEntity<Book> deleteBook(long id) {
+    public void deleteBook(long id) {
         bookRepository.deleteById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

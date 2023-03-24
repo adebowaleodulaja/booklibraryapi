@@ -1,5 +1,7 @@
 package com.wizer.booklibrary.service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public void addNewCategory(Category category) {
+    public Category addNewCategory(Category category) {
 
         if (category == null) {
             throw new ApiRequestException("Bad Request");
@@ -27,7 +29,10 @@ public class CategoryService {
             throw new ApiRequestException("Category description is required in the payload");
         }
 
-        categoryRepository.save(category);
+        category.setCreated(ZonedDateTime.now(ZoneId.systemDefault()));
+        category.setUpdated(ZonedDateTime.now(ZoneId.systemDefault()));
+
+        return categoryRepository.save(category);
     }
 
     public Category updateCategory(Long id, Category categoryDTO) {
