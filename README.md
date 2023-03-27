@@ -9,3 +9,7 @@ by default, this can be updated in the `application.properties` file.
 
 You need to make sure the category is not linked to a book already - if that's the case, the book has to be deleted first before the category can be deleted.
 
+## Documentation link
+
+After running the application, navigate to `http://127.0.0.1:8000/swagger-ui/#/`
+
