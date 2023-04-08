@@ -1,12 +1,15 @@
 package com.wizer.booklibrary.model;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -27,6 +30,9 @@ public class Category {
 
     @Column(name = "updated")
     private ZonedDateTime updated;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Book> books;
 
     public Category() {
     }

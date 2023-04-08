@@ -2,15 +2,13 @@ package com.wizer.booklibrary.model;
 
 import java.time.ZonedDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -47,9 +45,8 @@ public class Book {
     @Column(name = "updated")
     private ZonedDateTime updated;
 
-    @OneToOne(cascade = CascadeType.DETACH)
-    @JoinTable(name = "book_category", joinColumns = { @JoinColumn(name = "book_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "category_id") })
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id")
     private Category category;
 
     public Book() {

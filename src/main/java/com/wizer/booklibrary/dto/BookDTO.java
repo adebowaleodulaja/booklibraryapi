@@ -1,13 +1,30 @@
 package com.wizer.booklibrary.dto;
 
-import com.wizer.booklibrary.model.Category;
-
 public class BookDTO {
+    private String title;
+    private String author;
     private String isbn;
     private String yearReleased;
     private int noOfCopies;
     private String publisher;
-    private Category category;
+    // private Category category;
+    private Long categoryId;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public String getIsbn() {
         return isbn;
@@ -41,23 +58,25 @@ public class BookDTO {
         this.publisher = publisher;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((author == null) ? 0 : author.hashCode());
         result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
         result = prime * result + ((yearReleased == null) ? 0 : yearReleased.hashCode());
         result = prime * result + noOfCopies;
         result = prime * result + ((publisher == null) ? 0 : publisher.hashCode());
-        result = prime * result + ((category == null) ? 0 : category.hashCode());
+        result = prime * result + ((categoryId == null) ? 0 : categoryId.hashCode());
         return result;
     }
 
@@ -70,6 +89,16 @@ public class BookDTO {
         if (getClass() != obj.getClass())
             return false;
         BookDTO other = (BookDTO) obj;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (author == null) {
+            if (other.author != null)
+                return false;
+        } else if (!author.equals(other.author))
+            return false;
         if (isbn == null) {
             if (other.isbn != null)
                 return false;
@@ -87,12 +116,22 @@ public class BookDTO {
                 return false;
         } else if (!publisher.equals(other.publisher))
             return false;
-        if (category == null) {
-            if (other.category != null)
+        if (categoryId == null) {
+            if (other.categoryId != null)
                 return false;
-        } else if (!category.equals(other.category))
+        } else if (!categoryId.equals(other.categoryId))
             return false;
         return true;
     }
+
+    /*
+     * public Category getCategory() {
+     * return category;
+     * }
+     * 
+     * public void setCategory(Category category) {
+     * this.category = category;
+     * }
+     */
 
 }
